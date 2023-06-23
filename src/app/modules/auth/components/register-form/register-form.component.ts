@@ -8,46 +8,51 @@ import { AuthService } from '@services/auth.service';
 import { CustomValidators } from '@utils/validators';
 
 @Component({
-  selector: 'app-register-form',
-  templateUrl: './register-form.component.html',
+    selector: 'app-register-form',
+    templateUrl: './register-form.component.html',
 })
 export class RegisterFormComponent {
-  form = this.formBuilder.nonNullable.group({
-    name: ['', [Validators.required]],
-    email: ['', [Validators.email, Validators.required]],
-    password: ['', [Validators.minLength(8), Validators.required]],
-    confirmPassword: ['', [Validators.required]],
-  }, {
-    validators: [ CustomValidators.MatchValidator('password', 'confirmPassword') ]
-  });
-  status: RequestStatus = 'init';
-  faEye = faEye;
-  faEyeSlash = faEyeSlash;
-  showPassword = false;
+    form = this.formBuilder.nonNullable.group(
+        {
+            name: ['', [Validators.required]],
+            email: ['', [Validators.email, Validators.required]],
+            password: ['', [Validators.minLength(8), Validators.required]],
+            confirmPassword: ['', [Validators.required]],
+        },
+        {
+            validators: [
+                CustomValidators.MatchValidator('password', 'confirmPassword'),
+            ],
+        }
+    );
+    status: RequestStatus = 'init';
+    faEye = faEye;
+    faEyeSlash = faEyeSlash;
+    showPassword = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
+    constructor(
+        private formBuilder: FormBuilder,
+        private router: Router,
         private authService: AuthService
-  ) {}
+    ) {}
 
-  register() {
-    if (this.form.valid) {
-      this.status = 'loading';
-      const { name, email, password } = this.form.getRawValue();
-            this.authService.register(name,email,password).subscribe({
+    register() {
+        if (this.form.valid) {
+            this.status = 'loading';
+            const { name, email, password } = this.form.getRawValue();
+            this.authService.register(name, email, password).subscribe({
                 next: () => {
-                    this.status = "success";
+                    this.status = 'success';
                     this.router.navigate(['/login']);
                 },
                 error: (error) => {
-                    this.status = "failed";
+                    this.status = 'failed';
                     console.log(error);
-                }
-            })
-      console.log(name, email, password);
-    } else {
-      this.form.markAllAsTouched();
+                },
+            });
+            console.log(name, email, password);
+        } else {
+            this.form.markAllAsTouched();
+        }
     }
-  }
 }
