@@ -30,7 +30,7 @@ export class RegisterFormComponent {
         }
     );
     status: RequestStatus = 'init';
-    statusUser: RequestStatus = 'init'
+    statusUser: RequestStatus = 'init';
     faEye = faEye;
     faEyeSlash = faEyeSlash;
     showPassword = false;
@@ -40,7 +40,7 @@ export class RegisterFormComponent {
         private formBuilder: FormBuilder,
         private router: Router,
         private authService: AuthService
-    ) { }
+    ) {}
 
     register() {
         if (this.form.valid) {
@@ -64,26 +64,25 @@ export class RegisterFormComponent {
 
     validateUser() {
         if (this.formUser.valid) {
-            this.statusUser = "loading";
+            this.statusUser = 'loading';
             const { email } = this.formUser.getRawValue();
             this.authService.isAvailable(email).subscribe({
                 next: (rta) => {
-                    this.statusUser = "success";
+                    this.statusUser = 'success';
                     if (rta.isAvailable) {
                         this.form.controls.email.setValue(email);
                         this.showRegister = true;
                     } else {
                         this.router.navigate(['/login'], {
-                            queryParams: { email }
+                            queryParams: { email },
                         });
                     }
                 },
                 error: (error) => {
-                    this.statusUser = "failed";
+                    this.statusUser = 'failed';
                     console.log(error);
-                }
-            }
-            );
+                },
+            });
         } else {
             this.formUser.markAsTouched();
         }

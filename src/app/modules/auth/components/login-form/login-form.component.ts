@@ -26,12 +26,12 @@ export class LoginFormComponent {
         private route: ActivatedRoute,
         private authService: AuthService
     ) {
-        this.route.queryParamMap.subscribe(params => {
+        this.route.queryParamMap.subscribe((params) => {
             const email = params.get('email');
             if (email) {
                 this.form.controls.email.setValue(email);
             }
-        })
+        });
     }
 
     doLogin() {
